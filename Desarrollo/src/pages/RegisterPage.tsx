@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { ArrowLeft, Mail, Lock, User } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 import { useState } from 'react';
 import Logo from '@/components/common/Logo';
 import wallpaperGreen from '@/assets/images/wallpaper_green.svg';
@@ -11,8 +11,17 @@ export default function RegisterPage() {
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const passwordChecks = [
+    { label: 'Minimo 8 caracteres', valid: password.length >= 8 },
+    { label: 'Una mayuscula', valid: /[A-Z]/.test(password) },
+    { label: 'Una minuscula', valid: /[a-z]/.test(password) },
+    { label: 'Un numero', valid: /\d/.test(password) },
+    { label: 'Un simbolo', valid: /[^A-Za-z0-9]/.test(password) },
+  ];
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,13 +104,42 @@ export default function RegisterPage() {
               <div className="bg-white rounded-full p-4 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-[color:var(--brand)]">
                 <Lock size={20} className="text-[#5A6B5C]" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="Contrasena"
                   className="flex-1 bg-transparent outline-none text-[#2C3E2F]"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="text-[#5A6B5C] hover:text-[#2C3E2F] transition-colors"
+                  aria-label={showPassword ? 'Ocultar contrasena' : 'Mostrar contrasena'}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+
+              <div className="bg-white/80 rounded-2xl px-4 py-3 text-sm text-[#2C3E2F] shadow-sm">
+                <p className="text-[#5A6B5C] mb-2">Tu contrasena segura incluye:</p>
+                <div className="grid gap-1">
+                  {passwordChecks.map((rule) => (
+                    <div key={rule.label} className="flex items-center gap-2">
+                      <span
+                        className={
+                          rule.valid
+                            ? 'inline-flex size-2 rounded-full bg-emerald-500'
+                            : 'inline-flex size-2 rounded-full bg-[#D6D0C5]'
+                        }
+                        aria-hidden="true"
+                      />
+                      <span className={rule.valid ? 'text-emerald-700' : 'text-[#7A877C]'}>
+                        {rule.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <button
