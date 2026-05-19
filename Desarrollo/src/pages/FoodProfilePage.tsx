@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router';
 import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import Logo from '@/components/common/Logo';
+import wallpaperGreen from '@/assets/images/wallpaper_green.svg';
 
 const dietaryOptions = ['Vegetariano', 'Vegano', 'Sin gluten', 'Sin lácteos', 'Keto', 'Paleo'];
 
@@ -16,18 +17,27 @@ export default function FoodProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F5F3ED] to-[#E8E5DD]">
-      <div className="p-6 flex items-center gap-4">
+    <div className="relative min-h-screen overflow-hidden">
+      <div
+        className="absolute inset-0 bg-[#E8E5DD] bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${wallpaperGreen})` }}
+      />
+      <div className="absolute inset-0 backdrop-blur-sm bg-white/10" />
+      <div className="relative z-10 p-6 flex items-center gap-4">
         <button onClick={() => navigate('/register')} className="text-[color:var(--brand)] hover:bg-white/50 p-2 rounded-full transition-colors">
           <ArrowLeft size={24} />
         </button>
-        <Logo size="sm" />
+        <div className="rounded-2xl bg-white border border-white/70 px-4 py-2 shadow-sm">
+          <Logo size="sm" />
+        </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 pb-12">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 pb-12">
         <div className="text-center mb-8">
-          <h1 className="text-3xl text-[#2C3E2F] mb-2" style={{ fontWeight: 700 }}>Perfil Alimenticio</h1>
-          <p className="text-[#5A6B5C]">¡Bienvenido! Personalicemos tu experiencia</p>
+          <div className="inline-block rounded-[30px] bg-white border border-white/70 px-9 py-6 shadow-sm">
+            <h1 className="text-3xl text-[#2C3E2F] mb-2" style={{ fontWeight: 700 }}>Perfil Alimenticio</h1>
+            <p className="text-[#5A6B5C]">¡Bienvenido! Personalicemos tu experiencia</p>
+          </div>
         </div>
 
         <div className="bg-white rounded-[32px] p-8 shadow-md space-y-6">
