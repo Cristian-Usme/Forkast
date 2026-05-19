@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Edit2, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import AppLayout from '@/components/layout/AppLayout';
 import { daysOfWeek, meals, menuData } from '@/data/mock/menuData';
@@ -53,9 +53,6 @@ export default function WeeklyMenuPage() {
                             <p className="text-[#2C3E2F] text-center text-sm mb-1" style={{ fontWeight: 600 }}>
                               {mealData.name}
                             </p>
-                            <button className="absolute top-2 right-2 bg-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
-                              <Edit2 size={14} className="text-[color:var(--brand)]" />
-                            </button>
                           </div>
                         ) : (
                           <button
