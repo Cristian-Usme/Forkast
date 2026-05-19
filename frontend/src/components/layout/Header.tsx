@@ -1,6 +1,7 @@
 import { LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import Logo from '@/components/common/Logo';
+import { useAuth } from '@/hooks/useAuth';
 
 interface HeaderProps {
   showLogout?: boolean;
@@ -8,9 +9,14 @@ interface HeaderProps {
 
 export default function Header({ showLogout = false }: HeaderProps) {
   const navigate = useNavigate();
+  const { signOut } = useAuth();
 
-  const handleLogout = () => {
-    navigate('/');
+  const handleLogout = async () => {
+    const { error } = await signOut();
+    if (error) {
+      console.error('Failed to sign out:', error);
+    }
+    navigate('/', { replace: true });
   };
 
   return (

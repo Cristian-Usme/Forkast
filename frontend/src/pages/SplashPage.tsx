@@ -20,25 +20,28 @@ export default function SplashPage() {
           <p className="text-[#5A6B5C] text-center text-lg max-w-md mx-auto">
             Tu asistente personal de planificación de comidas
           </p>
+          <br />
+          <br />
+          <div className="relative z-10 w-full max-w-lg mx-auto space-y-4 pb-12">
+            <button
+              onClick={() => navigate('/register')}
+              className="w-full bg-[color:var(--brand)] text-white py-4 rounded-full shadow-md hover:bg-[color:var(--brand-dark)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F3ED]"
+              style={{ fontWeight: 600 }}
+            >
+              Crear cuenta
+            </button>
+            <button
+              onClick={() => navigate('/login')}
+              className="w-full bg-white text-[color:var(--brand)] py-4 rounded-full border-2 border-[color:var(--brand)] hover:bg-[#F5F3ED] transition-colors"
+              style={{ fontWeight: 600 }}
+            >
+              Iniciar sesión
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="relative z-10 w-full max-w-lg mx-auto space-y-4 pb-12">
-        <button
-          onClick={() => navigate('/register')}
-          className="w-full bg-[color:var(--brand)] text-white py-4 rounded-full shadow-md hover:bg-[color:var(--brand-dark)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F3ED]"
-          style={{ fontWeight: 600 }}
-        >
-          Crear cuenta
-        </button>
-        <button
-          onClick={() => navigate('/login')}
-          className="w-full bg-white text-[color:var(--brand)] py-4 rounded-full border-2 border-[color:var(--brand)] hover:bg-[#F5F3ED] transition-colors"
-          style={{ fontWeight: 600 }}
-        >
-          Iniciar sesión
-        </button>
-      </div>
+
     </div>
   );
 }
