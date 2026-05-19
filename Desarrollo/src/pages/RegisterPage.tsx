@@ -1,13 +1,41 @@
 import { useNavigate } from 'react-router';
 import { ArrowLeft, Mail, Lock, User } from 'lucide-react';
+import { useState } from 'react';
 import Logo from '@/components/common/Logo';
 import wallpaperGreen from '@/assets/images/wallpaper_green.svg';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const { signUp } = useAuth();
+  const [nombre, setNombre] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
+    setIsSubmitting(true);
+
+    const { error, needsEmailConfirmation } = await signUp(email, password, nombre);
+
+    if (error) {
+      setErrorMessage(error.message);
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (needsEmailConfirmation) {
+      navigate('/login', {
+        state: {
+          message: 'Cuenta creada. Revisa tu correo para confirmar y luego inicia sesion.',
+        },
+      });
+      return;
+    }
+
     navigate('/food-profile');
   };
 
@@ -33,6 +61,12 @@ export default function RegisterPage() {
               <p className="text-[#5A6B5C]">Únete a Forkast y comienza a planificar</p>
             </div>
 
+            {errorMessage ? (
+              <div className="bg-red-50 text-red-700 px-4 py-3 rounded-2xl text-sm shadow-sm">
+                {errorMessage}
+              </div>
+            ) : null}
+
             <form onSubmit={handleRegister} className="space-y-4">
               <div className="bg-white rounded-full p-4 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-[color:var(--brand)]">
                 <User size={20} className="text-[#5A6B5C]" />
@@ -40,6 +74,8 @@ export default function RegisterPage() {
                   type="text"
                   placeholder="Nombre completo"
                   className="flex-1 bg-transparent outline-none text-[#2C3E2F]"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
                   required
                 />
               </div>
@@ -48,8 +84,10 @@ export default function RegisterPage() {
                 <Mail size={20} className="text-[#5A6B5C]" />
                 <input
                   type="email"
-                  placeholder="Correo electrónico"
+                  placeholder="Correo electronico"
                   className="flex-1 bg-transparent outline-none text-[#2C3E2F]"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -58,18 +96,21 @@ export default function RegisterPage() {
                 <Lock size={20} className="text-[#5A6B5C]" />
                 <input
                   type="password"
-                  placeholder="Contraseña"
+                  placeholder="Contrasena"
                   className="flex-1 bg-transparent outline-none text-[#2C3E2F]"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
 
               <button
                 type="submit"
+                disabled={isSubmitting}
                 className="w-full bg-[color:var(--brand)] text-white py-4 rounded-full mt-6 shadow-md hover:bg-[color:var(--brand-dark)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F3ED]"
                 style={{ fontWeight: 600 }}
               >
-                Registrarse
+                {isSubmitting ? 'Creando cuenta...' : 'Registrarse'}
               </button>
             </form>
 
