@@ -66,8 +66,8 @@ export async function ensureUserProfile(user: User, nombre?: string) {
       id_usuario: user.id,
       nombre: fallbackName,
       presupuesto_semanal: null,
-      nivel_cocina: null,
+      nivel_dificultad: null,
     },
-    { onConflict: 'id_usuario' }
+    { onConflict: 'id_usuario', ignoreDuplicates: true }
   );
 }
