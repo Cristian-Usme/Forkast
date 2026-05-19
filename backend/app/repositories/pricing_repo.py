@@ -1,4 +1,5 @@
 from collections import defaultdict
+from math import ceil
 
 from app.core.supabase import get_supabase_client
 
@@ -51,42 +52,40 @@ def fetch_recipe_costs(recipe_ids: list[int]) -> dict[int, dict]:
 
         totals.setdefault(int(recipe_id), {'total_cost': 0.0, 'incompatible_ingredients': 0})
 
-        if required_qty is None:
-            totals[int(recipe_id)]['incompatible_ingredients'] += 1
-            continue
-
         candidates = products_by_ingredient.get(int(ingredient_id), [])
-        matching = [product for product in candidates if product.get('id_unidad') == unit_id]
+        if unit_id is not None:
+            matching = [product for product in candidates if product.get('id_unidad') == unit_id]
+        else:
+            matching = []
 
-        best_product = None
-        best_unit_price = None
+        if not matching:
+            matching = candidates
+
+        best_cost = None
         for product in matching:
-            product_qty = product.get('cantidad')
             product_price = product.get('precio')
-            if product_qty is None or product_price is None:
+            if product_price is None:
                 continue
-            product_qty_value = float(product_qty)
             product_price_value = float(product_price)
-            if product_qty_value <= 0:
-                continue
-            unit_price = product_price_value / product_qty_value
-            if best_unit_price is None or unit_price < best_unit_price:
-                best_unit_price = unit_price
-                best_product = product
+            product_qty = product.get('cantidad')
 
-        if not best_product:
+            if required_qty is not None and product_qty is not None:
+                product_qty_value = float(product_qty)
+                required_qty_value = float(required_qty)
+                if product_qty_value <= 0:
+                    continue
+                units_needed = ceil(required_qty_value / product_qty_value)
+                cost = units_needed * product_price_value
+            else:
+                cost = product_price_value
+
+            if best_cost is None or cost < best_cost:
+                best_cost = cost
+
+        if best_cost is None:
             totals[int(recipe_id)]['incompatible_ingredients'] += 1
             continue
 
-        product_qty_value = float(best_product.get('cantidad'))
-        product_price_value = float(best_product.get('precio'))
-        required_qty_value = float(required_qty)
-
-        if product_qty_value <= 0:
-            totals[int(recipe_id)]['incompatible_ingredients'] += 1
-            continue
-
-        cost = (required_qty_value / product_qty_value) * product_price_value
-        totals[int(recipe_id)]['total_cost'] += cost
+        totals[int(recipe_id)]['total_cost'] += best_cost
 
     return totals
