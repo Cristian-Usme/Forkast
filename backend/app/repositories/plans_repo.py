@@ -1,5 +1,6 @@
 from collections import defaultdict
 from datetime import date, timedelta
+from math import ceil
 
 from app.core.supabase import get_supabase_client
 
@@ -127,6 +128,8 @@ def generate_shopping_list(plan_id: int, user_id: str) -> dict | None:
         required_by_ingredient[int(ingredient_id)] += float(quantity)
 
     ingredient_ids = list(required_by_ingredient.keys())
+    if not ingredient_ids:
+        return None
 
     inventory_rows = _safe_execute(
         supabase.from_('inventario_usuario')
@@ -144,6 +147,25 @@ def generate_shopping_list(plan_id: int, user_id: str) -> dict | None:
         []
     )
 
+    ingredient_rows = _safe_execute(
+        supabase.from_('ingrediente')
+        .select('id_ingrediente,nombre')
+        .in_('id_ingrediente', ingredient_ids),
+        []
+    )
+    ingredient_names = {row.get('id_ingrediente'): row.get('nombre') for row in ingredient_rows}
+
+    unit_ids = list({row.get('id_unidad') for row in product_rows if row.get('id_unidad') is not None})
+    unit_rows = []
+    if unit_ids:
+        unit_rows = _safe_execute(
+            supabase.from_('unidad_medida')
+            .select('id_unidad,unidad')
+            .in_('id_unidad', unit_ids),
+            []
+        )
+    unit_names = {row.get('id_unidad'): row.get('unidad') for row in unit_rows}
+
     product_by_ingredient: dict[int, dict] = {}
     for product in product_rows:
         ingredient_id = product.get('id_ingrediente')
@@ -153,23 +175,50 @@ def generate_shopping_list(plan_id: int, user_id: str) -> dict | None:
             product_by_ingredient[int(ingredient_id)] = product
 
     items = []
+    total_estimado = 0.0
+    total_pendiente = 0.0
     for ingredient_id, required_qty in required_by_ingredient.items():
         available_qty = inventory_map.get(ingredient_id, 0.0)
         remaining_qty = max(required_qty - available_qty, 0.0)
-        if remaining_qty <= 0:
-            continue
         product = product_by_ingredient.get(ingredient_id)
         if not product:
             continue
 
-        items.append({
-            'id_producto': int(product.get('id_producto')),
-            'id_ingrediente': ingredient_id,
-            'nombre_comercial': product.get('nombre_comercial'),
-            'cantidad_total': remaining_qty,
-            'precio': float(product.get('precio')) if product.get('precio') is not None else None,
-            'id_unidad': product.get('id_unidad'),
-        })
+        product_qty = float(product.get('cantidad')) if product.get('cantidad') is not None else None
+        product_price = float(product.get('precio')) if product.get('precio') is not None else None
+
+        if product_qty is not None and product_qty > 0:
+            unidades_totales = int(ceil(required_qty / product_qty))
+            if product_price is not None:
+                total_estimado += unidades_totales * product_price
+        elif product_price is not None:
+            total_estimado += product_price
+
+        if remaining_qty > 0:
+            unidades_necesarias = None
+            subtotal = None
+            if product_qty is not None and product_qty > 0:
+                unidades_necesarias = int(ceil(remaining_qty / product_qty))
+                if product_price is not None:
+                    subtotal = unidades_necesarias * product_price
+                    total_pendiente += subtotal
+            elif product_price is not None:
+                subtotal = product_price
+                total_pendiente += subtotal
+
+            items.append({
+                'id_producto': int(product.get('id_producto')),
+                'id_ingrediente': ingredient_id,
+                'nombre_ingrediente': ingredient_names.get(ingredient_id),
+                'nombre_comercial': product.get('nombre_comercial'),
+                'cantidad_total': remaining_qty,
+                'unidad': unit_names.get(product.get('id_unidad')),
+                'cantidad_producto': product_qty,
+                'unidades_necesarias': unidades_necesarias,
+                'precio_unitario': product_price,
+                'subtotal': subtotal,
+                'id_unidad': product.get('id_unidad'),
+            })
 
     lista = _safe_execute(
         supabase.from_('lista_compra')
@@ -205,8 +254,25 @@ def generate_shopping_list(plan_id: int, user_id: str) -> dict | None:
             []
         )
 
+    budget_row = _safe_execute(
+        supabase.from_('usuario')
+        .select('presupuesto_semanal')
+        .eq('id_usuario', user_id)
+        .maybe_single(),
+        {}
+    )
+    presupuesto = None
+    if budget_row and budget_row.get('presupuesto_semanal') is not None:
+        presupuesto = float(budget_row.get('presupuesto_semanal'))
+
+    total_gastado = max(total_estimado - total_pendiente, 0.0)
+
     return {
         'id_lista': lista['id_lista'],
         'id_plan': plan_id,
+        'presupuesto_semanal': presupuesto,
+        'total_estimado': total_estimado,
+        'total_pendiente': total_pendiente,
+        'total_gastado': total_gastado,
         'items': items,
     }

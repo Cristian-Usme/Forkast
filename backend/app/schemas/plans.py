@@ -35,13 +35,22 @@ class WeeklyPlanResponse(BaseModel):
 class ShoppingListItem(BaseModel):
     id_producto: int
     id_ingrediente: int | None = None
+    nombre_ingrediente: str | None = None
     nombre_comercial: str | None = None
     cantidad_total: float
-    precio: float | None = None
+    unidad: str | None = None
+    cantidad_producto: float | None = None
+    unidades_necesarias: int | None = None
+    precio_unitario: float | None = None
+    subtotal: float | None = None
     id_unidad: int | None = None
 
 
 class ShoppingListResponse(BaseModel):
     id_lista: int
     id_plan: int
+    presupuesto_semanal: float | None = None
+    total_estimado: float | None = None
+    total_pendiente: float | None = None
+    total_gastado: float | None = None
     items: list[ShoppingListItem]
