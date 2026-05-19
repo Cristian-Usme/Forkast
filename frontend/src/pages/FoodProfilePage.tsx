@@ -5,6 +5,7 @@ import Logo from '@/components/common/Logo';
 import wallpaperGreen from '@/assets/images/wallpaper_green.svg';
 import { supabase } from '@/lib/supabase';
 import { useAuthContext } from '@/contexts/AuthContext';
+import { fetchRecommendations } from '@/services/recommendations';
 
 type NamedOption = {
   id: string;
@@ -45,6 +46,7 @@ export default function FoodProfilePage() {
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
 
   const debouncedAlergenoQuery = useDebouncedValue(alergenoQuery, 300);
   const trimmedAlergenoQuery = useMemo(() => debouncedAlergenoQuery.trim(), [debouncedAlergenoQuery]);
@@ -233,7 +235,17 @@ export default function FoodProfilePage() {
     }
 
     setIsSubmitting(false);
-    navigate('/recommendations');
+    setIsLoadingRecommendations(true);
+
+    try {
+      const result = await fetchRecommendations();
+      console.log('Recommended recipe IDs:', result.recommended_recipe_ids);
+    } catch (recommendationError) {
+      console.error('Failed to fetch recommendations:', recommendationError);
+    } finally {
+      setIsLoadingRecommendations(false);
+      navigate('/recommendations');
+    }
   };
 
   return (
@@ -381,6 +393,14 @@ export default function FoodProfilePage() {
           </button>
         </form>
       </div>
+      {isLoadingRecommendations ? (
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
+          <div className="size-12 rounded-full border-4 border-[color:var(--brand)] border-t-transparent animate-spin" />
+          <p className="mt-4 text-[#2C3E2F]" style={{ fontWeight: 600 }}>
+            Generando recomendaciones personalizadas...
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }

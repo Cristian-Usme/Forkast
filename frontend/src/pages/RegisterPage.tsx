@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Logo from '@/components/common/Logo';
 import wallpaperGreen from '@/assets/images/wallpaper_green.svg';
 import { useAuth } from '@/hooks/useAuth';
-import { fetchRecommendations } from '@/services/recommendations';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -15,7 +14,6 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
 
   const passwordChecks = [
     { label: 'Minimo 8 caracteres', valid: password.length >= 8 },
@@ -47,17 +45,7 @@ export default function RegisterPage() {
       return;
     }
 
-    setIsLoadingRecommendations(true);
-
-    try {
-      const result = await fetchRecommendations();
-      console.log('Recommended recipe IDs:', result.recommended_recipe_ids);
-    } catch (recommendationError) {
-      console.error('Failed to fetch recommendations:', recommendationError);
-    } finally {
-      setIsLoadingRecommendations(false);
-      navigate('/food-profile');
-    }
+    navigate('/food-profile');
   };
 
   return (
@@ -174,14 +162,6 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {isLoadingRecommendations ? (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
-          <div className="size-12 rounded-full border-4 border-[color:var(--brand)] border-t-transparent animate-spin" />
-          <p className="mt-4 text-[#2C3E2F]" style={{ fontWeight: 600 }}>
-            Generando recomendaciones personalizadas...
-          </p>
-        </div>
-      ) : null}
     </div>
   );
 }
