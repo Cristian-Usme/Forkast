@@ -1,20 +1,62 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Clock, DollarSign } from 'lucide-react';
 import AppLayout from '@/components/layout/AppLayout';
-
-const recipes = [
-  { id: 1, name: 'Salteado de Vegetales', time: '20 min', cost: '$8', calories: '320 kcal', image: '🥗' },
-  { id: 2, name: 'Salmón a la Parrilla', time: '25 min', cost: '$12', calories: '450 kcal', image: '🐟' },
-  { id: 3, name: 'Pasta Primavera', time: '30 min', cost: '$7', calories: '380 kcal', image: '🍝' },
-  { id: 4, name: 'Tacos de Pollo', time: '15 min', cost: '$9', calories: '410 kcal', image: '🌮' },
-  { id: 5, name: 'Bowl Buddha', time: '20 min', cost: '$10', calories: '395 kcal', image: '🥙' },
-  { id: 6, name: 'Ensalada César', time: '10 min', cost: '$6', calories: '280 kcal', image: '🥗' },
-];
+import RecipeCard from '@/components/recommendations/RecipeCard';
+import { fetchRecommendations, getCachedRecommendations } from '@/services/recommendations';
 
 const filters = ['Todos', 'Rápido', 'Económico', 'Saludable', 'Popular'];
 
+type RecipeItem = {
+  id_receta: number;
+  nombre: string;
+  descripcion?: string | null;
+  duracion?: number | null;
+  icon_name: string;
+};
+
 export default function RecommendationsPage() {
   const navigate = useNavigate();
+  const [recipes, setRecipes] = useState<RecipeItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadRecommendations = async () => {
+      const cached = getCachedRecommendations();
+      if (cached) {
+        setRecipes(cached.items ?? []);
+        setErrorMessage(null);
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetchRecommendations();
+        if (!isMounted) {
+          return;
+        }
+        setRecipes(response.items ?? []);
+        setErrorMessage(null);
+      } catch (error) {
+        if (!isMounted) {
+          return;
+        }
+        setErrorMessage('No pudimos cargar tus recomendaciones.');
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadRecommendations();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <AppLayout showLogout activeNav="home" contentClassName="pb-24">
@@ -41,36 +83,27 @@ export default function RecommendationsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {recipes.map(recipe => (
-            <div
-              key={recipe.id}
-              className="group bg-white rounded-[28px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out cursor-pointer"
-              onClick={() => navigate('/recipe/1')}
-            >
-              <div className="w-full aspect-square bg-gradient-to-br from-[color:var(--brand-soft)] to-[#F5F3ED] rounded-[24px] flex items-center justify-center text-7xl mb-4 transition-transform duration-500 group-hover:scale-105">
-                {recipe.image}
-              </div>
-              <h3 className="text-[#2C3E2F] mb-3 text-xl" style={{ fontWeight: 600 }}>{recipe.name}</h3>
-              <div className="flex flex-wrap gap-2 mb-4">
-                <span className="bg-[#F5F3ED] text-[#5A6B5C] px-3 py-1 rounded-full text-sm">{recipe.calories}</span>
-              </div>
-              <div className="flex items-center justify-between text-[#5A6B5C] mb-4">
-                <div className="flex items-center gap-1">
-                  <Clock size={16} />
-                  <span>{recipe.time}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <DollarSign size={16} />
-                  <span>{recipe.cost}</span>
-                </div>
-              </div>
-              <button className="w-full bg-[color:var(--brand)] text-white py-3 rounded-full hover:bg-[color:var(--brand-dark)] transition-all duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-white">
-                Añadir al menú
-              </button>
-            </div>
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="py-12 text-center text-[#5A6B5C]">
+            Generando recomendaciones personalizadas...
+          </div>
+        ) : null}
+
+        {errorMessage ? (
+          <div className="py-12 text-center text-red-600">{errorMessage}</div>
+        ) : null}
+
+        {!isLoading && !errorMessage ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {recipes.map((recipe) => (
+              <RecipeCard
+                key={recipe.id_receta}
+                {...recipe}
+                onClick={() => navigate(`/recipe/${recipe.id_receta}`)}
+              />
+            ))}
+          </div>
+        ) : null}
       </div>
     </AppLayout>
   );

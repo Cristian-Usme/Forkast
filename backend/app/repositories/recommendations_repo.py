@@ -150,3 +150,46 @@ def fetch_recipes_dataset() -> pd.DataFrame:
         })
 
     return pd.DataFrame.from_records(records)
+
+
+def _pick_icon_name(nombre: str) -> str:
+    nombre_lower = (nombre or '').lower()
+    if any(token in nombre_lower for token in ['salmon', 'pescado', 'atun', 'trucha', 'marisco']):
+        return 'fish'
+    if any(token in nombre_lower for token in ['ensalada', 'salad', 'bowl', 'verdura', 'vegetal']):
+        return 'salad'
+    if any(token in nombre_lower for token in ['pasta', 'spaghetti', 'lasagna', 'fideos', 'noodle']):
+        return 'pasta'
+    if any(token in nombre_lower for token in ['pollo', 'chicken']):
+        return 'chicken'
+    if any(token in nombre_lower for token in ['arroz', 'rice', 'risotto']):
+        return 'rice'
+    if any(token in nombre_lower for token in ['sopa', 'soup', 'caldo']):
+        return 'soup'
+    return 'salad'
+
+
+def fetch_recipes_details(recipe_ids: list[int]) -> list[dict]:
+    if not recipe_ids:
+        return []
+
+    supabase = get_supabase_client()
+    rows = _safe_execute(
+        supabase.from_('recetas')
+        .select('id_receta,nombre,descripcion,duracion')
+        .in_('id_receta', recipe_ids),
+        []
+    )
+
+    details = []
+    for row in rows:
+        nombre = row.get('nombre') or 'Receta'
+        details.append({
+            'id_receta': row.get('id_receta'),
+            'nombre': nombre,
+            'descripcion': row.get('descripcion'),
+            'duracion': row.get('duracion'),
+            'icon_name': _pick_icon_name(nombre),
+        })
+
+    return details

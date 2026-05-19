@@ -3,6 +3,7 @@ import jwt
 
 from app.core.supabase import get_supabase_client
 from app.services.recommendation_service import generate_recommendations
+from app.schemas.recommendations import RecommendationsResponse
 
 router = APIRouter(prefix='/recommendations', tags=['recommendations'])
 
@@ -35,11 +36,7 @@ def _get_user_id_from_token(authorization: str | None) -> str:
     raise HTTPException(status_code=401, detail='Invalid token.')
 
 
-@router.get('')
+@router.get('', response_model=RecommendationsResponse)
 def get_recommendations(authorization: str | None = Header(default=None)):
     user_id = _get_user_id_from_token(authorization)
-    recomendaciones = generate_recommendations(user_id=user_id, top_n=6)
-    return {
-        'recommended_recipe_ids': [r['id_receta'] for r in recomendaciones],
-        'items': recomendaciones,
-    }
+    return generate_recommendations(user_id=user_id, top_n=6)
