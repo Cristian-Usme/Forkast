@@ -18,7 +18,7 @@ export default function RecommendationsPage() {
 
   return (
     <AppLayout showLogout activeNav="home" contentClassName="pb-24">
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-[1600px] mx-auto px-6 py-8">
         <div className="mb-6">
           <h1 className="text-3xl md:text-4xl text-[#2C3E2F] mb-2" style={{ fontWeight: 700 }}>Recomendaciones Semanales</h1>
           <p className="text-[#5A6B5C]">Personalizadas para ti</p>
@@ -41,14 +41,14 @@ export default function RecommendationsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {recipes.map(recipe => (
             <div
               key={recipe.id}
-              className="bg-white rounded-[28px] p-6 shadow-md hover:shadow-lg transition-all cursor-pointer"
+              className="group bg-white rounded-[28px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out cursor-pointer"
               onClick={() => navigate('/recipe/1')}
             >
-              <div className="w-full aspect-square bg-gradient-to-br from-[#E8F5EE] to-[#F5F3ED] rounded-[24px] flex items-center justify-center text-7xl mb-4">
+              <div className="w-full aspect-square bg-gradient-to-br from-[#E8F5EE] to-[#F5F3ED] rounded-[24px] flex items-center justify-center text-7xl mb-4 transition-transform duration-500 group-hover:scale-105">
                 {recipe.image}
               </div>
               <h3 className="text-[#2C3E2F] mb-3 text-xl" style={{ fontWeight: 600 }}>{recipe.name}</h3>
@@ -65,7 +65,7 @@ export default function RecommendationsPage() {
                   <span>{recipe.cost}</span>
                 </div>
               </div>
-              <button className="w-full bg-[#44916F] text-white py-3 rounded-full hover:bg-[#3A7D5F] transition-colors">
+              <button className="w-full bg-[#44916F] text-white py-3 rounded-full hover:bg-[#3A7D5F] transition-all duration-300 ease-in-out">
                 Añadir al menú
               </button>
             </div>

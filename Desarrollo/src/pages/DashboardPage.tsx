@@ -7,14 +7,14 @@ export default function DashboardPage() {
 
   return (
     <AppLayout showLogout activeNav="stats" contentClassName="pb-24">
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-[1400px] mx-auto px-6 py-8">
         <div className="mb-6">
           <h1 className="text-3xl md:text-4xl text-[#2C3E2F] mb-2" style={{ fontWeight: 700 }}>Estadísticas</h1>
           <p className="text-[#5A6B5C]">Tus métricas de un vistazo</p>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-[24px] p-6 shadow-md hover:shadow-lg transition-all">
+          <div className="bg-white rounded-[24px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
             <div className="flex items-center gap-3 mb-3">
               <div className="bg-[#E8F5EE] p-3 rounded-full">
                 <Clock size={24} className="text-[#44916F]" />
@@ -24,7 +24,7 @@ export default function DashboardPage() {
             <p className="text-3xl text-[#2C3E2F]" style={{ fontWeight: 700 }}>24 min</p>
           </div>
 
-          <div className="bg-white rounded-[24px] p-6 shadow-md hover:shadow-lg transition-all">
+          <div className="bg-white rounded-[24px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
             <div className="flex items-center gap-3 mb-3">
               <div className="bg-[#E8F5EE] p-3 rounded-full">
                 <DollarSign size={24} className="text-[#44916F]" />
@@ -34,7 +34,7 @@ export default function DashboardPage() {
             <p className="text-3xl text-[#2C3E2F]" style={{ fontWeight: 700 }}>$52.47</p>
           </div>
 
-          <div className="bg-white rounded-[24px] p-6 shadow-md hover:shadow-lg transition-all">
+          <div className="bg-white rounded-[24px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
             <div className="flex items-center gap-3 mb-3">
               <div className="bg-[#E8F5EE] p-3 rounded-full">
                 <TrendingDown size={24} className="text-[#44916F]" />
@@ -44,7 +44,7 @@ export default function DashboardPage() {
             <p className="text-3xl text-[#2C3E2F]" style={{ fontWeight: 700 }}>52%</p>
           </div>
 
-          <div className="bg-white rounded-[24px] p-6 shadow-md hover:shadow-lg transition-all">
+          <div className="bg-white rounded-[24px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
             <div className="flex items-center gap-3 mb-3">
               <div className="bg-[#E8F5EE] p-3 rounded-full">
                 <UtensilsCrossed size={24} className="text-[#44916F]" />
@@ -56,7 +56,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-6">
-          <div className="bg-white rounded-[28px] p-8 shadow-md">
+          <div className="bg-white rounded-[28px] p-8 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
             <h2 className="text-[#2C3E2F] mb-6 text-xl" style={{ fontWeight: 600 }}>Gasto Mensual</h2>
 
             <div className="flex items-end justify-between h-64 gap-6">
@@ -78,7 +78,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-[28px] p-8 shadow-md">
+          <div className="bg-white rounded-[28px] p-8 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
             <h2 className="text-[#2C3E2F] mb-6 text-xl" style={{ fontWeight: 600 }}>Estado del Presupuesto</h2>
 
             <div className="space-y-6">

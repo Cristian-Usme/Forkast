@@ -24,7 +24,7 @@ export default function RecipeDetailPage() {
 
   return (
     <AppLayout showLogout>
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="relative">
           <div className="w-full h-80 md:h-96 bg-gradient-to-br from-[#E8F5EE] to-[#BFDACC] flex items-center justify-center text-9xl">
             🥗
@@ -55,8 +55,8 @@ export default function RecipeDetailPage() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            <div className="bg-white rounded-[28px] p-6 shadow-md">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div className="bg-white rounded-[28px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
               <h2 className="text-[#2C3E2F] mb-4 text-xl" style={{ fontWeight: 600 }}>Ingredientes</h2>
               <ul className="space-y-3">
                 {ingredients.map((ingredient, index) => (
@@ -68,7 +68,7 @@ export default function RecipeDetailPage() {
               </ul>
             </div>
 
-            <div className="bg-white rounded-[28px] p-6 shadow-md">
+            <div className="bg-white rounded-[28px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
               <h2 className="text-[#2C3E2F] mb-4 text-xl" style={{ fontWeight: 600 }}>Preparación</h2>
               <ol className="space-y-4">
                 {steps.map((step, index) => (

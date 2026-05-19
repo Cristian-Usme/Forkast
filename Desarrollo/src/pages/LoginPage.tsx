@@ -21,7 +21,7 @@ export default function LoginPage() {
       </div>
 
       <div className="flex-1 flex items-center justify-center px-6">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-lg mx-auto">
           <div className="text-center mb-8">
             <Logo size="md" className="justify-center mb-4" />
             <h1 className="text-3xl text-[#2C3E2F] mb-2" style={{ fontWeight: 700 }}>Bienvenido de Nuevo</h1>

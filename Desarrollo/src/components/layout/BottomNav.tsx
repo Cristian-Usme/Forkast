@@ -14,13 +14,13 @@ export default function BottomNav({ active }: BottomNavProps) {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-[#E8E5DD] px-4 py-3 md:hidden">
-      <div className="flex items-center justify-between max-w-md mx-auto">
+    <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-[#E8E5DD] px-4 py-3 z-50">
+      <div className="flex items-center justify-between max-w-[1400px] mx-auto">
         {navItems.map(({ id, icon: Icon, label, path }) => (
           <button
             key={id}
             onClick={() => navigate(path)}
-            className={`flex flex-col items-center gap-1 transition-colors ${
+            className={`flex flex-col items-center gap-1 px-3 py-2 rounded-2xl hover:bg-[#F5F3ED] transition-colors ${
               active === id ? 'text-[#44916F]' : 'text-[#5A6B5C]'
             }`}
           >

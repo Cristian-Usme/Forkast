@@ -6,7 +6,7 @@ export default function SplashPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F5F3ED] to-[#E8E5DD] flex flex-col items-center justify-center px-6">
-      <div className="flex-1 flex flex-col items-center justify-center">
+      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-lg mx-auto">
         <div className="bg-white rounded-[32px] p-12 mb-8 shadow-lg">
           <Logo size="lg" />
         </div>
@@ -15,7 +15,7 @@ export default function SplashPage() {
         </p>
       </div>
 
-      <div className="w-full max-w-md space-y-4 pb-12">
+      <div className="w-full max-w-lg mx-auto space-y-4 pb-12">
         <button
           onClick={() => navigate('/register')}
           className="w-full bg-[#44916F] text-white py-4 rounded-full shadow-md hover:bg-[#3A7D5F] transition-colors"

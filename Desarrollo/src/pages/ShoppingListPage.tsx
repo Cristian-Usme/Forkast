@@ -16,7 +16,7 @@ export default function ShoppingListPage() {
 
   return (
     <AppLayout showLogout activeNav="shopping" contentClassName="pb-32">
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-5xl mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl md:text-4xl text-[#2C3E2F] mb-2" style={{ fontWeight: 700 }}>Lista de Compras</h1>
@@ -34,7 +34,7 @@ export default function ShoppingListPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-[32px] shadow-md overflow-hidden mb-6">
+        <div className="bg-white rounded-[32px] shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out overflow-hidden mb-6">
           {shoppingItems.map((item, index) => (
             <div
               key={item.id}
@@ -63,7 +63,7 @@ export default function ShoppingListPage() {
           ))}
         </div>
 
-        <div className="bg-gradient-to-r from-[#44916F] to-[#3A7D5F] rounded-[28px] p-6 md:p-8 shadow-lg">
+        <div className="bg-gradient-to-r from-[#44916F] to-[#3A7D5F] rounded-[28px] p-6 md:p-8 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-white/80 mb-1">Costo Total Estimado</p>

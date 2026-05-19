@@ -8,7 +8,7 @@ export default function WeeklyMenuPage() {
 
   return (
     <AppLayout showLogout activeNav="menu" contentClassName="pb-24">
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-[1600px] mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl md:text-4xl text-[#2C3E2F] mb-2" style={{ fontWeight: 700 }}>Menú Semanal</h1>
@@ -48,8 +48,8 @@ export default function WeeklyMenuPage() {
                     return (
                       <td key={`${day}-${meal}`} className="p-2">
                         {mealData ? (
-                          <div className="bg-gradient-to-br from-[#E8F5EE] to-[#F5F3ED] rounded-[20px] p-4 relative group hover:shadow-md transition-all">
-                            <div className="text-4xl text-center mb-2">{mealData.image}</div>
+                          <div className="min-h-[140px] bg-gradient-to-br from-[#E8F5EE] to-[#F5F3ED] rounded-[20px] p-4 relative group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
+                            <div className="text-5xl text-center mb-2">{mealData.image}</div>
                             <p className="text-[#2C3E2F] text-center text-sm mb-1" style={{ fontWeight: 600 }}>
                               {mealData.name}
                             </p>
@@ -61,7 +61,7 @@ export default function WeeklyMenuPage() {
                         ) : (
                           <button
                             onClick={() => navigate('/recommendations')}
-                            className="w-full aspect-square bg-[#F5F3ED] hover:bg-[#E8E5DD] rounded-[20px] flex flex-col items-center justify-center transition-colors"
+                            className="w-full min-h-[140px] bg-[#F5F3ED] hover:bg-[#E8E5DD] rounded-[20px] flex flex-col items-center justify-center transition-all duration-300 ease-in-out"
                           >
                             <Plus size={24} className="text-[#44916F] mb-1" />
                             <span className="text-[#5A6B5C] text-xs">Añadir</span>
@@ -79,7 +79,7 @@ export default function WeeklyMenuPage() {
         {/* Mobile View - Card Layout */}
         <div className="md:hidden space-y-4">
           {daysOfWeek.map(day => (
-            <div key={day} className="bg-white rounded-[24px] p-5 shadow-md">
+            <div key={day} className="bg-white rounded-[24px] p-5 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
               <h3 className="text-[#2C3E2F] mb-4 text-lg" style={{ fontWeight: 600 }}>{day}</h3>
 
               <div className="space-y-3">

@@ -13,8 +13,8 @@ import DashboardPage from '@/pages/DashboardPage';
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="size-full">
-        <div className="max-w-md mx-auto h-full bg-white">
+      <div className="size-full w-full min-h-screen">
+        <div className="w-full min-h-screen bg-white">
           <Routes>
             <Route path="/" element={<SplashPage />} />
             <Route path="/register" element={<RegisterPage />} />
