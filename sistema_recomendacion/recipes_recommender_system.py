@@ -1,30 +1,26 @@
 # -*- coding: utf-8 -*-
 """
-Script principal del sistema de recomendación.
-Carga datos, construye features, calcula similitud y ejecuta recomendaciones.
+Modulo de recomendacion.
+Prepara features y ejecuta recomendaciones con entrada externa.
 """
 
-import json
 import pandas as pd
+
 from recomendador import (
     transformar_features, MatrizFeatures,
     calcular_similitud, recomendar_recetas
 )
 
-# --- Pipeline ---
-recipes = pd.read_csv('recetas1.csv', sep=',', encoding='utf-8-sig')
-df = transformar_features(recipes)
-mf = MatrizFeatures()
-mf.construir_matriz_features(df)
-sim_matrix = calcular_similitud(mf.matriz_)
 
-# --- Usuario de ejemplo ---
-usuario = {
-    "recetas_favoritas": [12, 35, 48],
-    "dieta": "Vegetariano",
-    "alergenos": ["Huevo", "Maní"],
-    "nivel_dificultad": "Principiante"
-}
+def preparar_recomendador(df: pd.DataFrame, calcular_sim: bool = True):
+    """Prepara dataframe y matrices para recomendaciones."""
+    df_pre = transformar_features(df)
+    mf = MatrizFeatures()
+    mf.construir_matriz_features(df_pre)
+    sim_matrix = calcular_similitud(mf.matriz_) if calcular_sim else None
+    return df_pre, sim_matrix
 
-resultado = recomendar_recetas(usuario, df, sim_matrix, top_n=5)
-print(json.dumps(resultado, indent=2, ensure_ascii=False))
+
+def recomendar(usuario: dict, df: pd.DataFrame, sim_matrix, top_n: int = 5):
+    """Ejecuta recomendaciones dado un usuario y dataset preprocesado."""
+    return recomendar_recetas(usuario, df, sim_matrix, top_n=top_n)

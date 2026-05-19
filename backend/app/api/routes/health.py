@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.core.config import settings
+from app.core.config import settings, get_supabase_key_role
 from app.core.supabase import get_supabase_client
 
 router = APIRouter()
@@ -26,6 +26,7 @@ def meta():
         'service': settings.app_name,
         'version': settings.app_version,
         'supabase_url': settings.supabase_url,
+        'supabase_key_role': get_supabase_key_role(),
     }
 
 

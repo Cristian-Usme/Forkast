@@ -3,3 +3,8 @@ uvicorn[standard]
 python-dotenv
 supabase
 pydantic-settings
+pandas
+numpy
+scikit-learn
+scipy
+nltk

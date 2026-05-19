@@ -38,19 +38,20 @@ historial de desperdicio de inventario de un usuario
 | Name                     | Type      | Constraints      |
 | ------------------------ | --------- | ---------------- |
 | `id_desperdicio`         | `int8`    | Primary Identity |
-| `id_usuario`             | `int4`    |                  |
 | `id_ingrediente`         | `int4`    | Nullable         |
 | `cantidad_desperdiciada` | `numeric` | Nullable         |
 | `fecha_descarte`         | `date`    | Nullable         |
+| `id_usuario`             | `uuid`    | Nullable         |
 
 ## Table `ingrediente`
 
 ### Columns
 
-| Name             | Type   | Constraints |
-| ---------------- | ------ | ----------- |
-| `id_ingrediente` | `int4` | Primary     |
-| `nombre`         | `text` | Nullable    |
+| Name               | Type   | Constraints |
+| ------------------ | ------ | ----------- |
+| `id_ingrediente`   | `int4` | Primary     |
+| `nombre`           | `text` | Nullable    |
+| `id_clasificacion` | `int8` | Nullable    |
 
 ## Table `inventario_usuario`
 
@@ -61,10 +62,10 @@ consolidar información sobre los alimentos que dispone el usuario
 | Name                  | Type      | Constraints      |
 | --------------------- | --------- | ---------------- |
 | `id_inventario`       | `int8`    | Primary Identity |
-| `id_usuario`          | `int4`    |                  |
 | `id_ingrediente`      | `int4`    | Nullable         |
 | `id_estado`           | `int2`    | Nullable         |
 | `cantidad_disponible` | `numeric` | Nullable         |
+| `id_usuario`          | `uuid`    | Nullable         |
 
 ## Table `lista_compra`
 
@@ -113,9 +114,9 @@ consolidar información sobre los alimentos que dispone el usuario
 | Name           | Type   | Constraints |
 | -------------- | ------ | ----------- |
 | `id_plan`      | `int4` | Primary     |
-| `id_usuario`   | `int4` | Nullable    |
 | `fecha_inicio` | `date` | Nullable    |
 | `fecha_fin`    | `date` | Nullable    |
+| `id_usuario`   | `uuid` | Nullable    |
 
 ## Table `producto_supermercado`
 
@@ -132,6 +133,15 @@ tabla intermedia entre ingredientes y producto correspondiente.
 | `cantidad`         | `int8`    | Nullable         |
 | `precio`           | `int8`    | Nullable         |
 | `id_unidad`        | `int8`    | Nullable         |
+
+## Table `receta_dieta`
+
+### Columns
+
+| Name        | Type   | Constraints |
+| ----------- | ------ | ----------- |
+| `id_receta` | `int4` | Primary     |
+| `id_dieta`  | `int4` | Primary     |
 
 ## Table `receta_ingrediente`
 
@@ -153,7 +163,6 @@ tabla intermedia entre ingredientes y producto correspondiente.
 | `id_receta`      | `int4` | Primary     |
 | `nombre`         | `text` | Nullable    |
 | `descripcion`    | `text` | Nullable    |
-| `id_dieta`       | `int4` | Nullable    |
 | `id_tipo_cocina` | `int8` | Nullable    |
 | `id_dificultad`  | `int8` | Nullable    |
 | `duracion`       | `int4` | Nullable    |
@@ -164,10 +173,10 @@ Lista de supermercados disponibles
 
 ### Columns
 
-| Name              | Type          | Constraints      |
-| ----------------- | ------------- | ---------------- |
-| `id_supermercado` | `int8`        | Primary Identity |
-| `supermercado`    | `timestamptz` |                  |
+| Name              | Type      | Constraints      |
+| ----------------- | --------- | ---------------- |
+| `id_supermercado` | `int8`    | Primary Identity |
+| `supermercado`    | `varchar` | Nullable         |
 
 ## Table `tipos_cocina`
 
@@ -182,10 +191,10 @@ Lista de supermercados disponibles
 
 ### Columns
 
-| Name            | Type          | Constraints      |
-| --------------- | ------------- | ---------------- |
-| `id_unidad`     | `int8`        | Primary Identity |
-| `nombre_unidad` | `timestamptz` |                  |
+| Name        | Type      | Constraints      |
+| ----------- | --------- | ---------------- |
+| `id_unidad` | `int8`    | Primary Identity |
+| `unidad`    | `varchar` | Nullable         |
 
 ## Table `usuario`
 
@@ -193,10 +202,10 @@ Lista de supermercados disponibles
 
 | Name                  | Type      | Constraints |
 | --------------------- | --------- | ----------- |
-| `id_usuario`          | `int4`    | Primary     |
 | `nombre`              | `text`    |             |
 | `presupuesto_semanal` | `numeric` | Nullable    |
-| `nivel_cocina`        | `text`    | Nullable    |
+| `nivel_dificultad`    | `int4`    | Nullable    |
+| `id_usuario`          | `uuid`    | Primary     |
 
 ## Table `usuario_alergeno`
 
@@ -204,16 +213,16 @@ tabla intermedia entre usuarios y alergias.
 
 ### Columns
 
-| Name          | Type   | Constraints      |
-| ------------- | ------ | ---------------- |
-| `id_usuario`  | `int4` | Primary Identity |
-| `id_alergeno` | `int8` | Primary          |
+| Name          | Type   | Constraints |
+| ------------- | ------ | ----------- |
+| `id_alergeno` | `int8` |             |
+| `id_usuario`  | `uuid` | Nullable    |
 
 ## Table `usuario_dieta`
 
 ### Columns
 
-| Name         | Type   | Constraints      |
-| ------------ | ------ | ---------------- |
-| `id_usuario` | `int4` | Primary Identity |
-| `id_dieta`   | `int8` |                  |
+| Name         | Type   | Constraints |
+| ------------ | ------ | ----------- |
+| `id_dieta`   | `int8` |             |
+| `id_usuario` | `uuid` | Nullable    |

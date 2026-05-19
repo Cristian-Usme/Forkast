@@ -35,7 +35,10 @@ warnings.filterwarnings('ignore')
 # CONSTANTES NLP
 # ============================================================================
 
-STOPWORDS_ES = set(stopwords.words('spanish'))
+try:
+    STOPWORDS_ES = set(stopwords.words('spanish'))
+except Exception:
+    STOPWORDS_ES = set()
 UNIDADES = {
     'g', 'kg', 'ml', 'l', 'litro', 'litros', 'taza', 'tazas',
     'cucharada', 'cucharadas', 'cucharadita', 'cucharaditas',
@@ -176,17 +179,17 @@ def calcular_similitud(matriz) -> np.ndarray:
 
 def _validar_usuario(usuario: dict, df: pd.DataFrame):
     """Valida la estructura del perfil de usuario."""
-    if not isinstance(usuario.get('recetas_favoritas'), list):
+    favoritas = usuario.get('recetas_favoritas')
+    if favoritas is not None and not isinstance(favoritas, list):
         raise ValueError("'recetas_favoritas' debe ser una lista de índices.")
-    if not usuario['recetas_favoritas']:
-        raise ValueError("'recetas_favoritas' no puede estar vacía.")
 
-    max_idx = len(df) - 1
-    invalidos = [i for i in usuario['recetas_favoritas'] if i < 0 or i > max_idx]
-    if invalidos:
-        raise ValueError(
-            f"Índices fuera de rango: {invalidos}. Rango válido: 0-{max_idx}"
-        )
+    if favoritas:
+        max_idx = len(df) - 1
+        invalidos = [i for i in favoritas if i < 0 or i > max_idx]
+        if invalidos:
+            raise ValueError(
+                f"Índices fuera de rango: {invalidos}. Rango válido: 0-{max_idx}"
+            )
 
 
 def filtrar_restricciones(df: pd.DataFrame, usuario: dict) -> pd.Series:
@@ -206,19 +209,23 @@ def filtrar_restricciones(df: pd.DataFrame, usuario: dict) -> pd.Series:
         )
 
     # Filtrar por compatibilidad de dieta
-    dieta = usuario.get('dieta', '')
-    if dieta:
+    dieta = usuario.get('dieta')
+    dietas = usuario.get('dietas')
+    if isinstance(dieta, str) and dieta:
         mask &= df['dietas_lista'].apply(lambda ds: dieta in ds)
+    elif isinstance(dietas, list) and dietas:
+        mask &= df['dietas_lista'].apply(lambda ds: any(d in ds for d in dietas))
 
     # Excluir recetas que ya son favoritas
     favoritas = usuario.get('recetas_favoritas', [])
-    mask &= ~df.index.isin(favoritas)
+    if favoritas:
+        mask &= ~df.index.isin(favoritas)
 
     return mask
 
 
 def recomendar_recetas(usuario: dict, df: pd.DataFrame,
-                       sim_matrix: np.ndarray, top_n: int = 5) -> list:
+                       sim_matrix: np.ndarray | None, top_n: int = 5) -> list:
     """
     Recomienda recetas basándose en similitud con las favoritas del usuario.
 
@@ -239,10 +246,13 @@ def recomendar_recetas(usuario: dict, df: pd.DataFrame,
     """
     _validar_usuario(usuario, df)
 
-    favoritas = usuario['recetas_favoritas']
+    favoritas = usuario.get('recetas_favoritas') or []
 
-    # Perfil = promedio de vectores de similitud de las favoritas
-    scores = np.mean(sim_matrix[favoritas], axis=0)
+    if favoritas and sim_matrix is not None:
+        scores = np.mean(sim_matrix[favoritas], axis=0)
+    else:
+        rng = np.random.default_rng(usuario.get('seed', 42))
+        scores = np.ones(len(df)) + rng.random(len(df)) * 0.001
 
     # Aplicar filtros
     mask = filtrar_restricciones(df, usuario)

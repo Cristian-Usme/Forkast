@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Logo from '@/components/common/Logo';
 import wallpaperGreen from '@/assets/images/wallpaper_green.svg';
 import { useAuth } from '@/hooks/useAuth';
+import { fetchRecommendations } from '@/services/recommendations';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ export default function LoginPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [infoMessage, setInfoMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
 
   useEffect(() => {
     const message = (location.state as { message?: string } | null)?.message;
@@ -39,7 +41,17 @@ export default function LoginPage() {
     }
 
     const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname;
-    navigate(from || '/recommendations', { replace: true });
+    setIsLoadingRecommendations(true);
+
+    try {
+      const result = await fetchRecommendations();
+      console.log('Recommended recipe IDs:', result.recommended_recipe_ids);
+    } catch (recommendationError) {
+      console.error('Failed to fetch recommendations:', recommendationError);
+    } finally {
+      setIsLoadingRecommendations(false);
+      navigate(from || '/recommendations', { replace: true });
+    }
   };
 
   return (
@@ -141,6 +153,15 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+
+      {isLoadingRecommendations ? (
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
+          <div className="size-12 rounded-full border-4 border-[color:var(--brand)] border-t-transparent animate-spin" />
+          <p className="mt-4 text-[#2C3E2F]" style={{ fontWeight: 600 }}>
+            Generando recomendaciones personalizadas...
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }
