@@ -44,8 +44,7 @@ def get_or_create_weekly_plan(user_id: str, target_date: date) -> dict | None:
             'fecha_inicio': str(week_start),
             'fecha_fin': str(week_end),
             'id_usuario': user_id,
-        })
-        .execute(),
+        }),
         []
     )
 
@@ -63,7 +62,7 @@ def add_recipe_to_plan(plan_id: int, recipe_id: int, fecha: date, tipo_comida: s
         'tipo_comida': tipo_comida,
     }
     result = _safe_execute(
-        supabase.from_('plan_receta').upsert(payload).execute(),
+        supabase.from_('plan_receta').upsert(payload),
         []
     )
 
@@ -186,8 +185,7 @@ def generate_shopping_list(plan_id: int, user_id: str) -> dict | None:
             .insert({
                 'id_plan': plan_id,
                 'fecha_generacion': str(date.today()),
-            })
-            .execute(),
+            }),
             []
         )
         if isinstance(lista_rows, list) and lista_rows:
@@ -203,8 +201,7 @@ def generate_shopping_list(plan_id: int, user_id: str) -> dict | None:
                 'id_lista': lista['id_lista'],
                 'id_producto': item['id_producto'],
                 'cantidad_total': item['cantidad_total'],
-            })
-            .execute(),
+            }),
             []
         )
 

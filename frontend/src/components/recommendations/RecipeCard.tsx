@@ -8,6 +8,7 @@ export type RecipeCardProps = {
   icon_name: string;
   total_cost?: number | null;
   onClick?: () => void;
+  onAddToMenu?: () => void;
 };
 
 export default function RecipeCard({
@@ -17,6 +18,7 @@ export default function RecipeCard({
   icon_name,
   total_cost,
   onClick,
+  onAddToMenu,
 }: RecipeCardProps) {
   const priceLabel = total_cost != null ? `$${total_cost.toFixed(2)}` : 'Precio no disponible';
 
@@ -46,7 +48,14 @@ export default function RecipeCard({
           <span>{priceLabel}</span>
         </div>
       </div>
-      <button className="w-full bg-[color:var(--brand)] text-white py-3 rounded-full hover:bg-[color:var(--brand-dark)] transition-all duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-white">
+      <button
+        className="w-full bg-[color:var(--brand)] text-white py-3 rounded-full hover:bg-[color:var(--brand-dark)] transition-all duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+        onClick={(event) => {
+          event.stopPropagation();
+          onAddToMenu?.();
+        }}
+        type="button"
+      >
         Anadir al menu
       </button>
     </div>

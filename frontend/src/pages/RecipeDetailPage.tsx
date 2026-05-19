@@ -1,33 +1,71 @@
-import { useNavigate } from 'react-router';
-import { ArrowLeft, Clock, Users, Flame } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
+import { ArrowLeft, Clock } from 'lucide-react';
 import AppLayout from '@/components/layout/AppLayout';
-
-const ingredients = [
-  '2 tazas de vegetales mixtos',
-  '1 cucharada de aceite de oliva',
-  '2 dientes de ajo picados',
-  '1 cucharada de salsa de soja',
-  '1 cucharadita de aceite de sésamo',
-  'Sal y pimienta al gusto'
-];
-
-const steps = [
-  'Calentar el aceite de oliva en una sartén grande a fuego medio-alto.',
-  'Añadir el ajo y saltear por 30 segundos hasta que esté fragante.',
-  'Agregar los vegetales mixtos y saltear por 5-7 minutos.',
-  'Añadir la salsa de soja y el aceite de sésamo, mezclar para cubrir.',
-  'Sazonar con sal y pimienta. Servir caliente.'
-];
+import { fetchRecipeDetail } from '@/services/recipes';
 
 export default function RecipeDetailPage() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [recipeName, setRecipeName] = useState('Receta');
+  const [recipeDescription, setRecipeDescription] = useState<string | null>(null);
+  const [recipeDuration, setRecipeDuration] = useState<number | null>(null);
+  const [recipeIcon, setRecipeIcon] = useState('🥗');
+  const [ingredients, setIngredients] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const recipeId = Number(id);
+    if (!recipeId) {
+      setErrorMessage('Receta no encontrada.');
+      setIsLoading(false);
+      return;
+    }
+
+    const loadRecipe = async () => {
+      try {
+        const recipe = await fetchRecipeDetail(recipeId);
+        if (!isMounted) {
+          return;
+        }
+        setRecipeName(recipe.nombre || 'Receta');
+        setRecipeDescription(recipe.descripcion ?? null);
+        setRecipeDuration(recipe.duracion ?? null);
+        setRecipeIcon(recipe.icon_name ? recipe.icon_name[0].toUpperCase() : '🥗');
+        const ingredientLabels = (recipe.ingredientes ?? []).map((item) => {
+          const qty = item.cantidad != null ? `${item.cantidad}` : 'Cantidad no disponible';
+          const unit = item.unidad ? ` ${item.unidad}` : '';
+          return `${qty}${unit} ${item.nombre}`.trim();
+        });
+        setIngredients(ingredientLabels);
+        setErrorMessage(null);
+      } catch (error) {
+        if (!isMounted) {
+          return;
+        }
+        setErrorMessage('No pudimos cargar la receta.');
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadRecipe();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
 
   return (
     <AppLayout showLogout>
       <div className="max-w-6xl mx-auto">
         <div className="relative">
           <div className="w-full h-80 md:h-96 bg-gradient-to-br from-[color:var(--brand-soft)] to-[color:var(--brand-soft-2)] flex items-center justify-center text-9xl">
-            🥗
+            {recipeIcon}
           </div>
           <button
             onClick={() => navigate('/recommendations')}
@@ -38,50 +76,44 @@ export default function RecipeDetailPage() {
         </div>
 
         <div className="px-6 py-8">
-          <h1 className="text-4xl text-[#2C3E2F] mb-4" style={{ fontWeight: 700 }}>Salteado de Vegetales</h1>
+          <h1 className="text-4xl text-[#2C3E2F] mb-3" style={{ fontWeight: 700 }}>{recipeName}</h1>
 
-          <div className="flex flex-wrap gap-6 mb-8">
+          {recipeDescription ? (
+            <p className="text-[#5A6B5C] mb-6 max-w-3xl">{recipeDescription}</p>
+          ) : null}
+
+          <div className="flex flex-wrap gap-4 mb-8">
             <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full">
               <Clock size={20} className="text-[color:var(--brand)]" />
-              <span className="text-[#5A6B5C]">20 min</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full">
-              <Users size={20} className="text-[color:var(--brand)]" />
-              <span className="text-[#5A6B5C]">2 porciones</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full">
-              <Flame size={20} className="text-[color:var(--brand)]" />
-              <span className="text-[#5A6B5C]">320 kcal</span>
+              <span className="text-[#5A6B5C]">{recipeDuration ? `${recipeDuration} min` : 'Sin tiempo'}</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <div className="bg-white rounded-[28px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
+          {isLoading ? (
+            <div className="py-12 text-center text-[#5A6B5C]">Cargando ingredientes...</div>
+          ) : null}
+
+          {errorMessage ? (
+            <div className="py-12 text-center text-red-600">{errorMessage}</div>
+          ) : null}
+
+          {!isLoading && !errorMessage ? (
+            <div className="bg-white rounded-[28px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out mb-8">
               <h2 className="text-[#2C3E2F] mb-4 text-xl" style={{ fontWeight: 600 }}>Ingredientes</h2>
-              <ul className="space-y-3">
-                {ingredients.map((ingredient, index) => (
-                  <li key={index} className="text-[#5A6B5C] flex gap-3">
-                    <span className="text-[color:var(--brand)] text-xl">•</span>
-                    {ingredient}
-                  </li>
-                ))}
-              </ul>
+              {ingredients.length ? (
+                <ul className="space-y-3">
+                  {ingredients.map((ingredient, index) => (
+                    <li key={index} className="text-[#5A6B5C] flex gap-3">
+                      <span className="text-[color:var(--brand)] text-xl">•</span>
+                      {ingredient}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-[#5A6B5C]">No hay ingredientes registrados.</p>
+              )}
             </div>
-
-            <div className="bg-white rounded-[28px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
-              <h2 className="text-[#2C3E2F] mb-4 text-xl" style={{ fontWeight: 600 }}>Preparación</h2>
-              <ol className="space-y-4">
-                {steps.map((step, index) => (
-                  <li key={index} className="text-[#5A6B5C] flex gap-3">
-                    <span className="bg-[color:var(--brand)] text-white w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style={{ fontWeight: 600 }}>
-                      {index + 1}
-                    </span>
-                    <span>{step}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </div>
+          ) : null}
 
           <button
             onClick={() => navigate('/menu')}
