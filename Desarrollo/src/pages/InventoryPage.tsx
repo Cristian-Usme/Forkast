@@ -11,7 +11,7 @@ export default function InventoryPage() {
             <h1 className="text-3xl md:text-4xl text-[#2C3E2F] mb-2" style={{ fontWeight: 700 }}>Inventario</h1>
             <p className="text-[#5A6B5C]">Gestiona tus alimentos</p>
           </div>
-          <button className="bg-[#44916F] hover:bg-[#3A7D5F] p-4 rounded-full shadow-md transition-colors">
+          <button className="bg-[color:var(--brand)] hover:bg-[color:var(--brand-dark)] p-4 rounded-full shadow-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F3ED]">
             <Plus size={24} className="text-white" />
           </button>
         </div>
@@ -31,14 +31,14 @@ export default function InventoryPage() {
 
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm">
-                  <Calendar size={14} className="text-[#44916F]" />
+                  <Calendar size={14} className="text-[color:var(--brand)]" />
                   <div className="flex-1">
                     <p className="text-[#5A6B5C]">Comprado</p>
                     <p className="text-[#2C3E2F]">{item.purchased}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <AlertCircle size={14} className={item.warning ? 'text-red-500' : 'text-[#44916F]'} />
+                  <AlertCircle size={14} className={item.warning ? 'text-red-500' : 'text-[color:var(--brand)]'} />
                   <div className="flex-1">
                     <p className="text-[#5A6B5C]">Vence</p>
                     <p className={item.warning ? 'text-red-500' : 'text-[#2C3E2F]'} style={{ fontWeight: item.warning ? 600 : 400 }}>

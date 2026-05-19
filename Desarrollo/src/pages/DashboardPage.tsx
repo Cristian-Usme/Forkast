@@ -16,8 +16,8 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <div className="bg-white rounded-[24px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
             <div className="flex items-center gap-3 mb-3">
-              <div className="bg-[#E8F5EE] p-3 rounded-full">
-                <Clock size={24} className="text-[#44916F]" />
+              <div className="bg-[color:var(--brand-soft)] p-3 rounded-full">
+                <Clock size={24} className="text-[color:var(--brand)]" />
               </div>
             </div>
             <p className="text-[#5A6B5C] mb-1">Tiempo Promedio</p>
@@ -26,8 +26,8 @@ export default function DashboardPage() {
 
           <div className="bg-white rounded-[24px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
             <div className="flex items-center gap-3 mb-3">
-              <div className="bg-[#E8F5EE] p-3 rounded-full">
-                <DollarSign size={24} className="text-[#44916F]" />
+              <div className="bg-[color:var(--brand-soft)] p-3 rounded-full">
+                <DollarSign size={24} className="text-[color:var(--brand)]" />
               </div>
             </div>
             <p className="text-[#5A6B5C] mb-1">Esta Semana</p>
@@ -36,8 +36,8 @@ export default function DashboardPage() {
 
           <div className="bg-white rounded-[24px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
             <div className="flex items-center gap-3 mb-3">
-              <div className="bg-[#E8F5EE] p-3 rounded-full">
-                <TrendingDown size={24} className="text-[#44916F]" />
+              <div className="bg-[color:var(--brand-soft)] p-3 rounded-full">
+                <TrendingDown size={24} className="text-[color:var(--brand)]" />
               </div>
             </div>
             <p className="text-[#5A6B5C] mb-1">Uso Presupuesto</p>
@@ -46,8 +46,8 @@ export default function DashboardPage() {
 
           <div className="bg-white rounded-[24px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
             <div className="flex items-center gap-3 mb-3">
-              <div className="bg-[#E8F5EE] p-3 rounded-full">
-                <UtensilsCrossed size={24} className="text-[#44916F]" />
+              <div className="bg-[color:var(--brand-soft)] p-3 rounded-full">
+                <UtensilsCrossed size={24} className="text-[color:var(--brand)]" />
               </div>
             </div>
             <p className="text-[#5A6B5C] mb-1">Comidas Guardadas</p>
@@ -62,7 +62,7 @@ export default function DashboardPage() {
             <div className="flex items-end justify-between h-64 gap-6">
               {monthlySpending.map(({ month, amount }) => (
                 <div key={month} className="flex-1 flex flex-col items-center gap-3">
-                  <div className="w-full rounded-t-2xl relative bg-gradient-to-t from-[#44916F] to-[#5AA67F]" style={{ height: `${(amount / maxSpending) * 100}%`, minHeight: '20%' }}>
+                  <div className="w-full rounded-t-2xl relative bg-gradient-to-t from-[color:var(--brand)] to-[color:var(--brand-light)]" style={{ height: `${(amount / maxSpending) * 100}%`, minHeight: '20%' }}>
                     <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-[#2C3E2F] text-sm" style={{ fontWeight: 600 }}>
                       ${amount}
                     </div>
@@ -88,12 +88,12 @@ export default function DashboardPage() {
                   <span className="text-[#2C3E2F]" style={{ fontWeight: 600 }}>$100</span>
                 </div>
                 <div className="w-full bg-[#F5F3ED] rounded-full h-4">
-                  <div className="bg-gradient-to-r from-[#44916F] to-[#5AA67F] h-4 rounded-full transition-all" style={{ width: '52%' }}></div>
+                  <div className="bg-gradient-to-r from-[color:var(--brand)] to-[color:var(--brand-light)] h-4 rounded-full transition-all" style={{ width: '52%' }}></div>
                 </div>
                 <p className="text-[#5A6B5C] mt-3">$52 gastado de $100</p>
               </div>
 
-              <div className="bg-gradient-to-br from-[#E8F5EE] to-[#F5F3ED] rounded-2xl p-6">
+              <div className="bg-gradient-to-br from-[color:var(--brand-soft)] to-[#F5F3ED] rounded-2xl p-6">
                 <p className="text-[#2C3E2F] text-lg mb-2" style={{ fontWeight: 600 }}>¡Buen trabajo!</p>
                 <p className="text-[#5A6B5C]">Estás $47.53 por debajo del presupuesto esta semana</p>
               </div>
@@ -105,7 +105,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex items-center justify-between p-4 bg-[#F5F3ED] rounded-2xl">
                   <span className="text-[#5A6B5C]">Ahorro proyectado</span>
-                  <span className="text-[#44916F]" style={{ fontWeight: 600 }}>$48/semana</span>
+                  <span className="text-[color:var(--brand)]" style={{ fontWeight: 600 }}>$48/semana</span>
                 </div>
               </div>
             </div>

@@ -24,11 +24,11 @@ export default function ShoppingListPage() {
           </div>
 
           <div className="hidden md:flex items-center gap-3 bg-white rounded-full p-3 shadow-sm">
-            <button className="text-[#5A6B5C] hover:text-[#44916F]">
+            <button className="text-[#5A6B5C] hover:text-[color:var(--brand)]">
               <ChevronLeft size={20} />
             </button>
             <span className="text-[#2C3E2F] px-4" style={{ fontWeight: 600 }}>Abr 20 – 26</span>
-            <button className="text-[#5A6B5C] hover:text-[#44916F]">
+            <button className="text-[#5A6B5C] hover:text-[color:var(--brand)]">
               <ChevronRight size={20} />
             </button>
           </div>
@@ -47,7 +47,7 @@ export default function ShoppingListPage() {
                   type="checkbox"
                   checked={checkedItems.includes(item.id)}
                   onChange={() => toggleItem(item.id)}
-                  className="w-6 h-6 rounded-full accent-[#44916F] cursor-pointer"
+                  className="w-6 h-6 rounded-full accent-[color:var(--brand)] cursor-pointer"
                 />
                 <div className="flex-1">
                   <p className={`text-[#2C3E2F] ${checkedItems.includes(item.id) ? 'line-through opacity-50' : ''}`} style={{ fontWeight: 500 }}>
@@ -63,7 +63,7 @@ export default function ShoppingListPage() {
           ))}
         </div>
 
-        <div className="bg-gradient-to-r from-[#44916F] to-[#3A7D5F] rounded-[28px] p-6 md:p-8 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
+        <div className="bg-gradient-to-r from-[color:var(--brand)] to-[color:var(--brand-dark)] rounded-[28px] p-6 md:p-8 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-white/80 mb-1">Costo Total Estimado</p>

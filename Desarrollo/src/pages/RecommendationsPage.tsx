@@ -31,7 +31,7 @@ export default function RecommendationsPage() {
                 key={filter}
                 className={`px-6 py-3 rounded-full whitespace-nowrap transition-all ${
                   filter === 'Todos'
-                    ? 'bg-[#44916F] text-white shadow-md'
+                    ? 'bg-[color:var(--brand)] text-white shadow-md'
                     : 'bg-white text-[#5A6B5C] hover:bg-[#E8E5DD]'
                 }`}
               >
@@ -48,7 +48,7 @@ export default function RecommendationsPage() {
               className="group bg-white rounded-[28px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out cursor-pointer"
               onClick={() => navigate('/recipe/1')}
             >
-              <div className="w-full aspect-square bg-gradient-to-br from-[#E8F5EE] to-[#F5F3ED] rounded-[24px] flex items-center justify-center text-7xl mb-4 transition-transform duration-500 group-hover:scale-105">
+              <div className="w-full aspect-square bg-gradient-to-br from-[color:var(--brand-soft)] to-[#F5F3ED] rounded-[24px] flex items-center justify-center text-7xl mb-4 transition-transform duration-500 group-hover:scale-105">
                 {recipe.image}
               </div>
               <h3 className="text-[#2C3E2F] mb-3 text-xl" style={{ fontWeight: 600 }}>{recipe.name}</h3>
@@ -65,7 +65,7 @@ export default function RecommendationsPage() {
                   <span>{recipe.cost}</span>
                 </div>
               </div>
-              <button className="w-full bg-[#44916F] text-white py-3 rounded-full hover:bg-[#3A7D5F] transition-all duration-300 ease-in-out">
+              <button className="w-full bg-[color:var(--brand)] text-white py-3 rounded-full hover:bg-[color:var(--brand-dark)] transition-all duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-white">
                 Añadir al menú
               </button>
             </div>

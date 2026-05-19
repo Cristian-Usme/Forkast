@@ -13,7 +13,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F5F3ED] to-[#E8E5DD] flex flex-col">
       <div className="p-6">
-        <button onClick={() => navigate('/')} className="text-[#44916F] hover:bg-white/50 p-2 rounded-full transition-colors">
+        <button onClick={() => navigate('/')} className="text-[color:var(--brand)] hover:bg-white/50 p-2 rounded-full transition-colors">
           <ArrowLeft size={24} />
         </button>
       </div>
@@ -27,7 +27,7 @@ export default function RegisterPage() {
           </div>
 
           <form onSubmit={handleRegister} className="space-y-4">
-            <div className="bg-white rounded-full p-4 flex items-center gap-3 shadow-sm">
+            <div className="bg-white rounded-full p-4 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-[color:var(--brand)]">
               <User size={20} className="text-[#5A6B5C]" />
               <input
                 type="text"
@@ -37,7 +37,7 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div className="bg-white rounded-full p-4 flex items-center gap-3 shadow-sm">
+            <div className="bg-white rounded-full p-4 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-[color:var(--brand)]">
               <Mail size={20} className="text-[#5A6B5C]" />
               <input
                 type="email"
@@ -47,7 +47,7 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div className="bg-white rounded-full p-4 flex items-center gap-3 shadow-sm">
+            <div className="bg-white rounded-full p-4 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-[color:var(--brand)]">
               <Lock size={20} className="text-[#5A6B5C]" />
               <input
                 type="password"
@@ -59,7 +59,7 @@ export default function RegisterPage() {
 
             <button
               type="submit"
-              className="w-full bg-[#44916F] text-white py-4 rounded-full mt-6 shadow-md hover:bg-[#3A7D5F] transition-colors"
+              className="w-full bg-[color:var(--brand)] text-white py-4 rounded-full mt-6 shadow-md hover:bg-[color:var(--brand-dark)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F3ED]"
               style={{ fontWeight: 600 }}
             >
               Registrarse
@@ -68,7 +68,7 @@ export default function RegisterPage() {
 
           <p className="text-center text-[#5A6B5C] mt-6">
             ¿Ya tienes cuenta?{' '}
-            <button onClick={() => navigate('/login')} className="text-[#44916F]" style={{ fontWeight: 600 }}>
+            <button onClick={() => navigate('/login')} className="text-[color:var(--brand)]" style={{ fontWeight: 600 }}>
               Inicia sesión
             </button>
           </p>

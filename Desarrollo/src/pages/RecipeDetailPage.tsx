@@ -26,14 +26,14 @@ export default function RecipeDetailPage() {
     <AppLayout showLogout>
       <div className="max-w-6xl mx-auto">
         <div className="relative">
-          <div className="w-full h-80 md:h-96 bg-gradient-to-br from-[#E8F5EE] to-[#BFDACC] flex items-center justify-center text-9xl">
+          <div className="w-full h-80 md:h-96 bg-gradient-to-br from-[color:var(--brand-soft)] to-[color:var(--brand-soft-2)] flex items-center justify-center text-9xl">
             🥗
           </div>
           <button
             onClick={() => navigate('/recommendations')}
             className="absolute top-6 left-6 bg-white/90 hover:bg-white p-3 rounded-full shadow-md transition-colors"
           >
-            <ArrowLeft size={24} className="text-[#44916F]" />
+            <ArrowLeft size={24} className="text-[color:var(--brand)]" />
           </button>
         </div>
 
@@ -42,15 +42,15 @@ export default function RecipeDetailPage() {
 
           <div className="flex flex-wrap gap-6 mb-8">
             <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full">
-              <Clock size={20} className="text-[#44916F]" />
+              <Clock size={20} className="text-[color:var(--brand)]" />
               <span className="text-[#5A6B5C]">20 min</span>
             </div>
             <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full">
-              <Users size={20} className="text-[#44916F]" />
+              <Users size={20} className="text-[color:var(--brand)]" />
               <span className="text-[#5A6B5C]">2 porciones</span>
             </div>
             <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full">
-              <Flame size={20} className="text-[#44916F]" />
+              <Flame size={20} className="text-[color:var(--brand)]" />
               <span className="text-[#5A6B5C]">320 kcal</span>
             </div>
           </div>
@@ -61,7 +61,7 @@ export default function RecipeDetailPage() {
               <ul className="space-y-3">
                 {ingredients.map((ingredient, index) => (
                   <li key={index} className="text-[#5A6B5C] flex gap-3">
-                    <span className="text-[#44916F] text-xl">•</span>
+                    <span className="text-[color:var(--brand)] text-xl">•</span>
                     {ingredient}
                   </li>
                 ))}
@@ -73,7 +73,7 @@ export default function RecipeDetailPage() {
               <ol className="space-y-4">
                 {steps.map((step, index) => (
                   <li key={index} className="text-[#5A6B5C] flex gap-3">
-                    <span className="bg-[#44916F] text-white w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style={{ fontWeight: 600 }}>
+                    <span className="bg-[color:var(--brand)] text-white w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style={{ fontWeight: 600 }}>
                       {index + 1}
                     </span>
                     <span>{step}</span>
@@ -85,7 +85,7 @@ export default function RecipeDetailPage() {
 
           <button
             onClick={() => navigate('/menu')}
-            className="w-full md:w-auto md:px-12 bg-[#44916F] text-white py-4 rounded-full shadow-md hover:bg-[#3A7D5F] transition-colors"
+            className="w-full md:w-auto md:px-12 bg-[color:var(--brand)] text-white py-4 rounded-full shadow-md hover:bg-[color:var(--brand-dark)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             style={{ fontWeight: 600 }}
           >
             Añadir al menú semanal

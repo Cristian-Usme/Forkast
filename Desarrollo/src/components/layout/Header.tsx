@@ -21,7 +21,7 @@ export default function Header({ showLogout = false }: HeaderProps) {
         {showLogout && (
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#F5F3ED] hover:bg-[#E8E5DD] text-[#44916F] transition-all duration-300 ease-in-out"
+            className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#F5F3ED] hover:bg-[#E8E5DD] text-[color:var(--brand)] transition-all duration-300 ease-in-out"
           >
             <LogOut size={18} />
             <span className="hidden md:inline">Cerrar sesión</span>

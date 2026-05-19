@@ -16,11 +16,11 @@ export default function WeeklyMenuPage() {
           </div>
 
           <div className="flex items-center gap-3 bg-white rounded-full p-3 shadow-sm">
-            <button className="text-[#5A6B5C] hover:text-[#44916F]">
+            <button className="text-[#5A6B5C] hover:text-[color:var(--brand)]">
               <ChevronLeft size={20} />
             </button>
             <span className="text-[#2C3E2F] px-4" style={{ fontWeight: 600 }}>Abr 20 – 26</span>
-            <button className="text-[#5A6B5C] hover:text-[#44916F]">
+            <button className="text-[#5A6B5C] hover:text-[color:var(--brand)]">
               <ChevronRight size={20} />
             </button>
           </div>
@@ -48,14 +48,14 @@ export default function WeeklyMenuPage() {
                     return (
                       <td key={`${day}-${meal}`} className="p-2">
                         {mealData ? (
-                          <div className="min-h-[140px] bg-gradient-to-br from-[#E8F5EE] to-[#F5F3ED] rounded-[20px] p-4 relative group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
+                          <div className="min-h-[140px] bg-gradient-to-br from-[color:var(--brand-soft)] to-[#F5F3ED] rounded-[20px] p-4 relative group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
                             <div className="text-5xl text-center mb-2">{mealData.image}</div>
                             <p className="text-[#2C3E2F] text-center text-sm mb-1" style={{ fontWeight: 600 }}>
                               {mealData.name}
                             </p>
                             <p className="text-[#5A6B5C] text-center text-xs">{mealData.calories}</p>
                             <button className="absolute top-2 right-2 bg-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
-                              <Edit2 size={14} className="text-[#44916F]" />
+                              <Edit2 size={14} className="text-[color:var(--brand)]" />
                             </button>
                           </div>
                         ) : (
@@ -63,7 +63,7 @@ export default function WeeklyMenuPage() {
                             onClick={() => navigate('/recommendations')}
                             className="w-full min-h-[140px] bg-[#F5F3ED] hover:bg-[#E8E5DD] rounded-[20px] flex flex-col items-center justify-center transition-all duration-300 ease-in-out"
                           >
-                            <Plus size={24} className="text-[#44916F] mb-1" />
+                            <Plus size={24} className="text-[color:var(--brand)] mb-1" />
                             <span className="text-[#5A6B5C] text-xs">Añadir</span>
                           </button>
                         )}
@@ -96,7 +96,7 @@ export default function WeeklyMenuPage() {
                       ) : (
                         <button
                           onClick={() => navigate('/recommendations')}
-                          className="flex items-center gap-1 text-[#44916F]"
+                          className="flex items-center gap-1 text-[color:var(--brand)]"
                         >
                           <Plus size={18} />
                           <span>Añadir</span>
@@ -112,7 +112,7 @@ export default function WeeklyMenuPage() {
 
         <button
           onClick={() => navigate('/shopping')}
-          className="w-full md:w-auto md:px-12 bg-[#44916F] text-white py-4 rounded-full shadow-md hover:bg-[#3A7D5F] transition-colors mt-8"
+          className="w-full md:w-auto md:px-12 bg-[color:var(--brand)] text-white py-4 rounded-full shadow-md hover:bg-[color:var(--brand-dark)] transition-colors mt-8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F3ED]"
           style={{ fontWeight: 600 }}
         >
           Generar Lista de Compras

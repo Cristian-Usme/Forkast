@@ -18,14 +18,14 @@ export default function SplashPage() {
       <div className="w-full max-w-lg mx-auto space-y-4 pb-12">
         <button
           onClick={() => navigate('/register')}
-          className="w-full bg-[#44916F] text-white py-4 rounded-full shadow-md hover:bg-[#3A7D5F] transition-colors"
+          className="w-full bg-[color:var(--brand)] text-white py-4 rounded-full shadow-md hover:bg-[color:var(--brand-dark)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F3ED]"
           style={{ fontWeight: 600 }}
         >
           Crear cuenta
         </button>
         <button
           onClick={() => navigate('/login')}
-          className="w-full bg-white text-[#44916F] py-4 rounded-full border-2 border-[#44916F] hover:bg-[#F5F3ED] transition-colors"
+          className="w-full bg-white text-[color:var(--brand)] py-4 rounded-full border-2 border-[color:var(--brand)] hover:bg-[#F5F3ED] transition-colors"
           style={{ fontWeight: 600 }}
         >
           Iniciar sesión

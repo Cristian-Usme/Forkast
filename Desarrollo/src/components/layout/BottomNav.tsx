@@ -21,10 +21,10 @@ export default function BottomNav({ active }: BottomNavProps) {
             key={id}
             onClick={() => navigate(path)}
             className={`flex flex-col items-center gap-1 px-3 py-2 rounded-2xl hover:bg-[#F5F3ED] transition-colors ${
-              active === id ? 'text-[#44916F]' : 'text-[#5A6B5C]'
+              active === id ? 'text-[color:var(--brand)]' : 'text-[#5A6B5C]'
             }`}
           >
-            <Icon size={24} className={active === id ? 'text-[#44916F]' : 'text-[#5A6B5C]'} />
+            <Icon size={24} className={active === id ? 'text-[color:var(--brand)]' : 'text-[#5A6B5C]'} />
             <span className="text-xs">{label}</span>
           </button>
         ))}
