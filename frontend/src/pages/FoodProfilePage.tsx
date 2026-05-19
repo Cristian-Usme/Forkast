@@ -274,7 +274,7 @@ export default function FoodProfilePage() {
 
         <form onSubmit={handleSubmit} className="bg-white rounded-[32px] p-8 shadow-md space-y-6">
           <div>
-            <label className="text-[#2C3E2F] mb-3 block text-lg" style={{ fontWeight: 600 }}>Alergenos</label>
+            <label className="text-[#2C3E2F] mb-3 block text-lg" style={{ fontWeight: 600 }}>Alergias</label>
             <div className="relative">
               <input
                 type="text"
@@ -326,7 +326,7 @@ export default function FoodProfilePage() {
           </div>
 
           <div>
-            <label className="text-[#2C3E2F] mb-3 block text-lg" style={{ fontWeight: 600 }}>Dieta</label>
+            <label className="text-[#2C3E2F] mb-3 block text-lg" style={{ fontWeight: 600 }}>Tipo de dieta</label>
             <div className="grid gap-3 sm:grid-cols-3">
               {dietas.map((dieta) => (
                 <button
@@ -347,7 +347,7 @@ export default function FoodProfilePage() {
           </div>
 
           <div>
-            <label className="text-[#2C3E2F] mb-3 block text-lg" style={{ fontWeight: 600 }}>Nivel de dificultad</label>
+            <label className="text-[#2C3E2F] mb-3 block text-lg" style={{ fontWeight: 600 }}>Destreza Culinaria</label>
             <div className="bg-[#F5F3ED] rounded-3xl p-3 focus-within:ring-2 focus-within:ring-[color:var(--brand)]">
               <select
                 value={selectedNivelId}
