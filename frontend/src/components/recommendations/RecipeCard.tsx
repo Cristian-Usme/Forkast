@@ -1,4 +1,4 @@
-import { Clock } from 'lucide-react';
+import { Clock, DollarSign } from 'lucide-react';
 
 export type RecipeCardProps = {
   id_receta: number;
@@ -6,6 +6,7 @@ export type RecipeCardProps = {
   descripcion?: string | null;
   duracion?: number | null;
   icon_name: string;
+  total_cost?: number | null;
   onClick?: () => void;
 };
 
@@ -14,8 +15,11 @@ export default function RecipeCard({
   descripcion,
   duracion,
   icon_name,
+  total_cost,
   onClick,
 }: RecipeCardProps) {
+  const priceLabel = total_cost != null ? `$${total_cost.toFixed(2)}` : 'Precio no disponible';
+
   return (
     <div
       className="group bg-white rounded-[28px] p-6 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-in-out cursor-pointer"
@@ -36,6 +40,10 @@ export default function RecipeCard({
         <div className="flex items-center gap-1">
           <Clock size={16} />
           <span>{duracion ? `${duracion} min` : 'Sin tiempo'}</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <DollarSign size={16} />
+          <span>{priceLabel}</span>
         </div>
       </div>
       <button className="w-full bg-[color:var(--brand)] text-white py-3 rounded-full hover:bg-[color:var(--brand-dark)] transition-all duration-300 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--brand)] focus-visible:ring-offset-2 focus-visible:ring-offset-white">

@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import AppLayout from '@/components/layout/AppLayout';
 import RecipeCard from '@/components/recommendations/RecipeCard';
-import { fetchRecommendations, getCachedRecommendations } from '@/services/recommendations';
-
-const filters = ['Todos', 'Rápido', 'Económico', 'Saludable', 'Popular'];
+import { fetchRecipeCosts, fetchRecommendations, getCachedRecommendations } from '@/services/recommendations';
 
 type RecipeItem = {
   id_receta: number;
@@ -12,6 +10,7 @@ type RecipeItem = {
   descripcion?: string | null;
   duracion?: number | null;
   icon_name: string;
+  total_cost?: number | null;
 };
 
 export default function RecommendationsPage() {
@@ -26,7 +25,9 @@ export default function RecommendationsPage() {
     const loadRecommendations = async () => {
       const cached = getCachedRecommendations();
       if (cached) {
-        setRecipes(cached.items ?? []);
+        const cachedItems = cached.items ?? [];
+        const pricedItems = await attachCosts(cachedItems);
+        setRecipes(pricedItems);
         setErrorMessage(null);
         setIsLoading(false);
         return;
@@ -37,7 +38,9 @@ export default function RecommendationsPage() {
         if (!isMounted) {
           return;
         }
-        setRecipes(response.items ?? []);
+        const items = response.items ?? [];
+        const pricedItems = await attachCosts(items);
+        setRecipes(pricedItems);
         setErrorMessage(null);
       } catch (error) {
         if (!isMounted) {
@@ -48,6 +51,23 @@ export default function RecommendationsPage() {
         if (isMounted) {
           setIsLoading(false);
         }
+      }
+    };
+
+    const attachCosts = async (items: RecipeItem[]) => {
+      if (!items.length) {
+        return items;
+      }
+
+      try {
+        const costs = await fetchRecipeCosts(items.map(item => item.id_receta));
+        const costMap = new Map(costs.map(cost => [cost.id_receta, cost.total_cost]));
+        return items.map(item => ({
+          ...item,
+          total_cost: costMap.get(item.id_receta) ?? null,
+        }));
+      } catch {
+        return items;
       }
     };
 
@@ -64,23 +84,6 @@ export default function RecommendationsPage() {
         <div className="mb-6">
           <h1 className="text-3xl md:text-4xl text-[#2C3E2F] mb-2" style={{ fontWeight: 700 }}>Recomendaciones Semanales</h1>
           <p className="text-[#5A6B5C]">Personalizadas para ti</p>
-        </div>
-
-        <div className="mb-6">
-          <div className="flex gap-3 overflow-x-auto pb-2">
-            {filters.map(filter => (
-              <button
-                key={filter}
-                className={`px-6 py-3 rounded-full whitespace-nowrap transition-all ${
-                  filter === 'Todos'
-                    ? 'bg-[color:var(--brand)] text-white shadow-md'
-                    : 'bg-white text-[#5A6B5C] hover:bg-[#E8E5DD]'
-                }`}
-              >
-                {filter}
-              </button>
-            ))}
-          </div>
         </div>
 
         {isLoading ? (
